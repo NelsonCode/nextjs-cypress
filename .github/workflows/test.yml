@@ -1,0 +1,23 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+      # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+      - name: Installing depedencies
+        run: npm install
+      - name: Linter
+        run: npm run lint
+      - name: Build for production
+        run: npm run build
+      - name: Running Cypress
+        run: npm run e2e
